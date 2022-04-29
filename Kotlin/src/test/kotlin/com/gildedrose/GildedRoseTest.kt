@@ -18,6 +18,15 @@ internal class GildedRoseTest {
         Item("Conjured Mana Cake", 3, 6)
     )
 
+    private val basicItem = Item("foo", 1, 1)
+
+    @Test
+    fun testDecrementingQuality() {
+        val app = GildedRose(arrayOf(basicItem))
+        app.updateQuality()
+        assertItem(0, 0, app.items[0] )
+    }
+
     @Test
     fun foo() {
         val items = arrayOf<Item>(Item("foo", 0, 0))
@@ -31,21 +40,29 @@ internal class GildedRoseTest {
         val app = GildedRose(items)
         app.updateQuality()
 
-        assertItem(Item("+5 Dexterity Vest", 9, 19), items[0])
-        assertItem(Item("Aged Brie", 1, 1), items[1])
-        assertItem(Item("Elixir of the Mongoose", 4, 6), items[2])
-        assertItem(Item("Sulfuras, Hand of Ragnaros", 0, 80), items[3])
-        assertItem(Item("Sulfuras, Hand of Ragnaros", -1, 80), items[4])
-        assertItem(Item("Backstage passes to a TAFKAL80ETC concert", 14, 21), items[5])
-        assertItem(Item("Backstage passes to a TAFKAL80ETC concert", 9, 50), items[6])
-        assertItem(Item("Backstage passes to a TAFKAL80ETC concert", 4, 50), items[7])
-        assertItem(Item("Conjured Mana Cake", 2, 5), items[8])
+        assertItem(Item("+5 Dexterity Vest", 9, 19), app.items[0])
+        assertItem(Item("Aged Brie", 1, 1), app.items[1])
+        assertItem(Item("Elixir of the Mongoose", 4, 6), app.items[2])
+        assertItem(Item("Sulfuras, Hand of Ragnaros", 0, 80), app.items[3])
+        assertItem(Item("Sulfuras, Hand of Ragnaros", -1, 80), app.items[4])
+        assertItem(Item("Backstage passes to a TAFKAL80ETC concert", 14, 21), app.items[5])
+        assertItem(Item("Backstage passes to a TAFKAL80ETC concert", 9, 50), app.items[6])
+        assertItem(Item("Backstage passes to a TAFKAL80ETC concert", 4, 50), app.items[7])
+        assertItem(Item("Conjured Mana Cake", 2, 5), app.items[8])
     }
 
     private fun assertItem(expectedItem: Item, actualItem: Item) {
         assertEquals(expectedItem.name, actualItem.name)
         assertEquals(expectedItem.sellIn, actualItem.sellIn, actualItem.name)
         assertEquals(expectedItem.quality, actualItem.quality, actualItem.name)
+    }
+
+    private fun assertItem(expectedName: String, expectedSellIn: Int, expectedQuality: Int, actualItem: Item) {
+        return assertItem(Item(expectedName, expectedSellIn, expectedQuality), actualItem)
+    }
+
+    private fun assertItem(expectedSellIn: Int, expectedQuality: Int, actualItem: Item) {
+        return assertItem(Item(actualItem.name, expectedSellIn, expectedQuality), actualItem)
     }
 }
 

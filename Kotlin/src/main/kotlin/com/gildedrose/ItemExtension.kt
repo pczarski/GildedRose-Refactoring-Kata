@@ -11,7 +11,6 @@ fun Item.decrementQuality() {
 fun Item.incrementQuality(amount: Int) {
     if(amount <= 0) throw IllegalArgumentException()
     this.quality = Integer.min(this.quality + amount, 50)
-    return
 }
 
 fun Item.incrementQuality() {
