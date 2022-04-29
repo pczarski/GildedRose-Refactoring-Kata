@@ -17,26 +17,19 @@ private fun sulfuras(item: Item): UpdatableItem = object: UpdatableItem(Item(ite
 
 private fun agedBrie(item: Item): UpdatableItem = object: UpdatableItemDecrementalSellin(item) {
     override fun updateQuality() {
-        this.incrementQuality()
-        if(sellIn < 0) this.incrementQuality()
+        getQualityUpdater(1).updateQuality(this)
     }
 }
 
 private fun backstagePasses(item: Item): UpdatableItem = object: UpdatableItemDecrementalSellin(item) {
     override fun updateQuality() {
-        when  {
-            this.sellIn < 0 -> {this.quality = 0; return}
-            this.sellIn <= 5 -> {this.incrementQuality(3); return}
-            this.sellIn <= 10 -> {this.incrementQuality(2); return}
-        }
-        this.incrementQuality()
+        getQualityUpdater(sellInThresholds = arrayOf(-1, 5, 10), amounts = arrayOf(0-MAX_QUALITY, 3, 2, 1)).updateQuality(this)
     }
 }
 
 private fun defaultItem(item: Item): UpdatableItem = object: UpdatableItemDecrementalSellin(item) {
     override fun updateQuality() {
-        this.decrementQuality()
-        if(sellIn < 0) this.decrementQuality()
+        getQualityUpdater(-1).updateQuality(this)
     }
 }
 

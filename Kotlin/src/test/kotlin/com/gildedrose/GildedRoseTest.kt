@@ -2,6 +2,7 @@ package com.gildedrose
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 
 internal class GildedRoseTest {
 
@@ -51,6 +52,14 @@ internal class GildedRoseTest {
         val app = GildedRose(items)
         app.updateQuality()
         assertItem(1, 2, app.items[0])
+    }
+
+    @Test
+    fun `concert test in default range`() {
+        val items = arrayOf(Item("Backstage passes to", 15, 1))
+        val app = GildedRose(items)
+        app.updateQuality()
+        assertItem(14, 2, app.items[0])
     }
 
     @Test

@@ -9,7 +9,6 @@ class GildedRose(var items: Array<Item>) {
             item.updateQuality()
         }
         this.items = updatableItems.toTypedArray()
-
     }
 
 }
