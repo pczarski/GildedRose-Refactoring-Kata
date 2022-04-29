@@ -1,15 +1,5 @@
 package com.gildedrose
 
-abstract class QualityUpdater {
-
-    internal abstract fun changeQuality(item: Item)
-
-    fun updateQuality(item: Item) {
-        changeQuality(item)
-        if (item.sellIn < 0) changeQuality(item)
-    }
-}
-
 fun getQualityUpdater(value: Int) = object : QualityUpdater() {
     override fun changeQuality(item: Item) {
         item.changeQuality(value)

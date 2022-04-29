@@ -23,17 +23,37 @@ private fun backstagePasses(item: Item): UpdatableItem = object: UpdatableItemDe
     }
 }
 
+private fun conjured(item: Item): UpdatableItem = object: UpdatableItemDecrementalSellin(item) {
+    override fun updateQuality() {
+        getQualityUpdater(2).changeQuality(this)
+    }
+
+}
+
 private fun defaultItem(item: Item): UpdatableItem = object: UpdatableItemDecrementalSellin(item) {
     override fun updateQuality() {
         getQualityUpdater(-1).updateQuality(this)
     }
 }
 
+internal interface UpdatableItemFactory {
+    fun make(item: Item): UpdatableItem
+}
+
+private const val defaultItemBaseName: String = "-!BaseName!-" // ik this is not good
+
+private val specialItemsMap = mapOf(
+    "Sulfuras" to object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return sulfuras(item) } },
+    "Aged Brie" to object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return agedBrie(item) } },
+    "Backstage passes" to object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return backstagePasses(item) } },
+    "Conjured" to object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return conjured(item) } },
+    defaultItemBaseName to object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return defaultItem(item) } },
+)
+
 fun updatableItem(item: Item): UpdatableItem {
-    when {
-        item.nameContains("Sulfuras") -> return sulfuras(item)
-        item.nameContains("Aged Brie") -> return agedBrie(item)
-        item.nameContains("Backstage passes") -> return backstagePasses(item)
+    var baseName = defaultItemBaseName
+    specialItemsMap.keys.forEach {
+        if (item.nameContains(it)) baseName = it
     }
-    return defaultItem(item)
+    return specialItemsMap[baseName]!!.make(item)
 }
