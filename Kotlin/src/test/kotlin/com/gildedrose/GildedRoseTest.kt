@@ -15,7 +15,8 @@ internal class GildedRoseTest {
         Item("Backstage passes to a TAFKAL80ETC concert", 10, 49),
         Item("Backstage passes to a TAFKAL80ETC concert", 5, 49),
         // this conjured item does not work properly yet
-        Item("Conjured Mana Cake", 3, 6)
+        Item("Conjured Mana Cake", 3, 6),
+        Item("Backstage passes to a TAFKAL80ETC concert", 0, 49)
     )
 
     private val basicItem = Item("foo", 1, 1)
@@ -36,6 +37,23 @@ internal class GildedRoseTest {
     }
 
     @Test
+    fun `Sulforas quality doesn't update`() {
+        val items = arrayOf(Item("Sulfuras, Hand of Ragnaros", 0, 80), Item("Sulfuras is the thing", 0, 80))
+        val app = GildedRose(items)
+        app.updateQuality()
+        assertItem(0, 80, app.items[0])
+        assertItem(0, 80, app.items[1])
+    }
+
+    @Test
+    fun `Aged Bree ages well`() {
+        val items = arrayOf(Item("Aged Brie", 2, 1))
+        val app = GildedRose(items)
+        app.updateQuality()
+        assertItem(1, 2, app.items[0])
+    }
+
+    @Test
     internal fun `validate update quality`() {
         val app = GildedRose(items)
         app.updateQuality()
@@ -49,6 +67,7 @@ internal class GildedRoseTest {
         assertItem(Item("Backstage passes to a TAFKAL80ETC concert", 9, 50), app.items[6])
         assertItem(Item("Backstage passes to a TAFKAL80ETC concert", 4, 50), app.items[7])
         assertItem(Item("Conjured Mana Cake", 2, 5), app.items[8])
+        assertItem(Item("Backstage passes to a TAFKAL80ETC concert", -1, 0), app.items[9])
     }
 
     private fun assertItem(expectedItem: Item, actualItem: Item) {

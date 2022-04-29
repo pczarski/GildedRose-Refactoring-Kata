@@ -1,7 +1,7 @@
 package com.gildedrose
 
-fun Item.nameContains(otherItem: String): Boolean {
-    return this.name.contains(otherItem, ignoreCase = false)
+fun Item.nameContains(otherName: String): Boolean {
+    return this.name.contains(otherName, ignoreCase = true)
 }
 
 fun Item.decrementQuality() {
