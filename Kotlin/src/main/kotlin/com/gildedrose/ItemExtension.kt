@@ -11,16 +11,16 @@ fun Item.changeQuality(value: Int) {
     this.quality = (this.quality + value).coerceAtLeast(0).coerceAtMost(MAX_QUALITY)
 }
 
-fun Item.decrementQuality(amount: Int) {
-    this.quality = (this.quality - amount).coerceAtLeast(0)
-}
-
-fun Item.incrementQuality(amount: Int) {
-    if(amount <= 0) throw IllegalArgumentException()
-    this.quality = (this.quality + amount).coerceAtMost(50)
-}
-
-fun Item.incrementQuality() {
-    this.incrementQuality(1)
-}
+//fun Item.decrementQuality(amount: Int) {
+//    this.quality = (this.quality - amount).coerceAtLeast(0)
+//}
+//
+//fun Item.incrementQuality(amount: Int) {
+//    if(amount <= 0) throw IllegalArgumentException()
+//    this.quality = (this.quality + amount).coerceAtMost(50)
+//}
+//
+//fun Item.incrementQuality() {
+//    this.incrementQuality(1)
+//}
 

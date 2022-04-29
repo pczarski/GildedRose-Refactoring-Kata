@@ -2,10 +2,6 @@ package com.gildedrose
 
 private fun sulfuras(item: Item): UpdatableItem = object: UpdatableItem(Item(item.name, item.sellIn, 80)) {
 
-    init {
-        if(item.quality < 80) throw IllegalArgumentException()
-    }
-
     override fun updateQuality() {
         return
     }
