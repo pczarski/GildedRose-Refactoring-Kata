@@ -40,20 +40,19 @@ internal interface UpdatableItemFactory {
     fun make(item: Item): UpdatableItem
 }
 
-private const val defaultItemBaseName: String = "-!BaseName!-" // ik this is not good
-
 private val specialItemsMap = mapOf(
     "Sulfuras" to object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return sulfuras(item) } },
     "Aged Brie" to object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return agedBrie(item) } },
     "Backstage passes" to object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return backstagePasses(item) } },
     "Conjured" to object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return conjured(item) } },
-    defaultItemBaseName to object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return defaultItem(item) } },
 )
 
+private val defaultItemFactory = object: UpdatableItemFactory { override fun make(item: Item): UpdatableItem { return defaultItem(item) } }
+
 fun updatableItem(item: Item): UpdatableItem {
-    var baseName = defaultItemBaseName
+    var baseName = "not a special item"
     specialItemsMap.keys.forEach {
         if (item.nameContains(it)) baseName = it
     }
-    return specialItemsMap[baseName]!!.make(item)
+    return specialItemsMap.getOrDefault(baseName, defaultItemFactory).make(item)
 }
